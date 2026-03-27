@@ -1963,6 +1963,10 @@ static struct worker *create_worker(struct worker_pool *pool)
 		goto fail;
 
 	set_user_nice(worker->task, pool->attrs->nice);
+
+	/* The hook is placed here because it needs to use the nice value */
+	trace_android_rvh_create_worker(worker->task, pool->attrs);
+
 	if (IS_ENABLED(CONFIG_ROCKCHIP_OPTIMIZE_RT_PRIO)) {
 		struct sched_param param;
 
